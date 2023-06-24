@@ -108,11 +108,11 @@ public class Main {
                 	
 
                     System.out.println("Informe o CPF: ");
-                    scanner.nextLine();
+                    cpf = scanner.nextLine();
 
                     System.out.println("Digite a senha para o Cadastro da conta: ");
                     senha = scanner.nextInt();
-                	
+                    
                 	
                 	
                 
