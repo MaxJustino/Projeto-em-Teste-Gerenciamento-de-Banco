@@ -107,14 +107,11 @@ public class Main {
                            System.out.println("Verifique a conta e acesse novamente");
                            break;
                        }
-                       
-                       
+                                     
                    } catch (Exception e) {
                        e.printStackTrace();
                    }
-                	
-            
-                	
+                 	
                     System.out.println("1 - Conta Poupança");
                     System.out.println("2 - Conta Corrente");
                     System.out.println("3 - Voltar");
@@ -133,11 +130,30 @@ public class Main {
                             int opcaoPoupanca = scanner.nextInt();
                             scanner.nextLine(); // Limpar o buffer de entrada
 
+                            
                             while (opcaoPoupanca != 0) {
                                 switch (opcaoPoupanca) {
                                     case 1:
                                         // Consultar saldo da Conta Poupança
                                         System.out.println("Saldo Conta Poupança: R$ " + contaPoupanca.getSaldo());
+                                        
+                                        try {
+                                        	database.conectarBanco();
+
+                                            ResultSet resultadoConsulta = database.executarQuerySql("SELECT saldo FROM conta WHERE cpf = '" + cpf + "' AND senha = '" + senha + "'");
+                                            
+                                            if (resultadoConsulta.next()) {
+                                                double saldobanco = resultadoConsulta.getDouble("saldo");
+                                                System.out.println("Saldo: " + saldobanco);
+                                            } else {
+                                                System.out.println("CPF ou senha incorretos.");
+                                            }
+                                            
+                                            database.desconectarBanco();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        
                                         break;
                                     case 2:
                                         // Realizar saque da Conta Poupança
