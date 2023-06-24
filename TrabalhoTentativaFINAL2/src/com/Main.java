@@ -82,7 +82,7 @@ public class Main {
                 		
                     break;
                 case 2:
-               
+               //ACESSO A CONTA 
                 	        	
                     System.out.println("Informe o CPF: ");
                      cpf = scanner.nextLine();
@@ -121,6 +121,7 @@ public class Main {
 
                     switch (opcaoConta) {
                         case 1:
+                        	//SELECIONANDO A OPÇÃO DESEJADA
                             System.out.println("Digite a opção desejada:");
                             System.out.println("1 - Consultar saldo (Conta Poupança)");
                             System.out.println("2 - Realizar saque (Conta Poupança)");
@@ -134,6 +135,7 @@ public class Main {
                             while (opcaoPoupanca != 0) {
                                 switch (opcaoPoupanca) {
                                     case 1:
+                                    	
                                         // Consultar saldo da Conta Poupança
                                         System.out.println("Saldo Conta Poupança: R$ " + contaPoupanca.getSaldo());
                                         
@@ -155,21 +157,82 @@ public class Main {
                                         }
                                         
                                         break;
+                                        
                                     case 2:
+                                    	
                                         // Realizar saque da Conta Poupança
                                         System.out.println("Digite o valor do saque (Conta Poupança): ");
                                         float valor = scanner.nextFloat();
-                                        contaPoupanca.sacar(valor);
-                                        break;
-                                    case 3:
-                                        // Realizar depósito na Conta Poupança
-                                        System.out.println("Digite o valor do depósito (Conta Poupança): ");
-                                        valor = scanner.nextFloat();
-                                        contaPoupanca.realizaDeposito(valor);                                     
-                                        break;
+                                                                      
+                                        	 try {
+                                                 database.conectarBanco();
 
-                                    default:
-                                        System.out.println("Opção inválida.");
+                                                 ResultSet resultadoConsulta = database.executarQuerySql("SELECT * FROM conta WHERE cpf = '" + cpf + "' AND senha = '" + senha + "'");
+
+                                                 if (resultadoConsulta.next()) {
+                                                     // CPF e senha válidos, realizar o saque
+                                                     double saldoBanco = resultadoConsulta.getDouble("saldo");
+
+                                                     if (saldoBanco >= valor) {
+                                                         // Saldo suficiente para o saque
+                                                         double novoSaldo = saldoBanco - valor;
+
+                                                         // Atualizar o saldo na tabela conta
+                                                         boolean statusQuery = database.executarUpdateSql("UPDATE conta SET saldo = " + novoSaldo + " WHERE cpf = '" + cpf + "' AND senha = '" + senha + "'");
+
+                                                         System.out.println("Saque realizado com sucesso.");
+                                                         System.out.println("Novo saldo: " + novoSaldo);
+                                                     } else {
+                                                         System.out.println("Saldo insuficiente para o saque.");
+                                                     }
+                                                 } else {
+                                                     System.out.println("CPF ou senha incorretos.");
+                                                 }
+
+                                                 database.desconectarBanco();
+                                             } catch (Exception e) {
+                                                 e.printStackTrace();
+                                             }
+                                                                  
+                                        break;   
+                                        
+                                    case 3:
+                                    	 // Realizar depósito na Conta Poupança
+                                        System.out.println("Digite o valor do depósito (Conta Poupança): ");
+                                        float valorDeposito = scanner.nextFloat();
+
+                                        try {
+                                            database.conectarBanco();
+
+                                            ResultSet resultadoConsulta = database.executarQuerySql("SELECT * FROM conta_poupanca WHERE cpf = '" + cpf + "' AND senha = '" + senha + "'");
+
+                                            if (resultadoConsulta.next()) {
+                                                // CPF e senha válidos, realizar o depósito
+                                                double saldoPoupanca = resultadoConsulta.getDouble("saldo");
+                                                double taxa = resultadoConsulta.getFloat("taxa");  // Obtém a taxa de juros da conta poupança
+
+                                                // Cálculo do novo saldo considerando a taxa de juros atualizada
+                                                double novoSaldo = saldoPoupanca + (valorDeposito / (1 + taxa));
+                                                double novaTaxa = taxa + 0.005;  // Atualiza a taxa de juros
+
+                                                // Atualiza o saldo e a taxa de juros na tabela conta_poupanca
+                                                boolean statusQuery = database.executarUpdateSql("UPDATE conta_poupanca SET saldo = " + novoSaldo + ", taxa = " + novaTaxa + " WHERE cpf = '" + cpf + "' AND senha = '" + senha + "'");
+
+                                                if (statusQuery) {
+                                                    System.out.println("Depósito realizado com sucesso.");
+                                                    System.out.println("Novo saldo: " + novoSaldo);
+                                                    System.out.println("Taxa de juros atualizada: " + novaTaxa);
+                                                } else {
+                                                    System.out.println("Falha ao atualizar saldo e taxa de juros.");
+                                                }
+                                            } else {
+                                                System.out.println("CPF ou senha incorretos.");
+                                            }
+
+                                            database.desconectarBanco();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
                                         break;
                                 }
 
@@ -184,10 +247,11 @@ public class Main {
 
                             break;
                         case 2:
+                        	
                             System.out.println("Digite a opção desejada:");
                             System.out.println("1 - Consultar saldo (Conta Corrente)");
                             System.out.println("2 - Realizar saque (Conta Corrente)");
-                            System.out.println("3 - Realizar saque com Cheque Especial (Conta Corrente)");
+                            System.out.println("3 - Realizar saque com  (Conta Corrente)");
                             System.out.println("0 - Sair");
 
                             int opcaoCorrente = scanner.nextInt();
@@ -217,7 +281,9 @@ public class Main {
                                         }
                                         
                                         break;
+                                        
                                     case 2:
+                                    	
                                     	// Realizar saque da Conta Corrente
                                         System.out.println("Digite o valor do saque (Conta Corrente): ");
                                         float valor = scanner.nextFloat();
@@ -253,7 +319,9 @@ public class Main {
                                         }
                                         
                                         break;
+                                        
                                     case 3:
+                                    	
                                         // Realizar saque com Cheque Especial da Conta Corrente
                                         System.out.println("Digite o valor do saque com Cheque Especial (Conta Corrente): ");
                                         valor = scanner.nextFloat();
@@ -368,6 +436,11 @@ public class Main {
 
     scanner.close();
 }
+
+private static void realizaDeposito(float valorDeposito, double taxa) {
+		// TODO Auto-generated method stub
+		
+	}
 
 public static  void mensagemStatus(String string) {
     // TODO Auto-generated method stub

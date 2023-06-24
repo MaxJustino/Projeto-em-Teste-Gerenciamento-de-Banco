@@ -1,25 +1,28 @@
 package com.model;
 
 public class contaPoupanca extends Conta {
-    private static float taxa = 0.005f;
+    private float taxa;
 
     // Construtor da classe para inicializar os atributos da conta poupança
     public contaPoupanca(String numero, String titular, double saldo, float taxa) {
         super(numero, titular, saldo);
-        contaPoupanca.taxa = taxa;
+        this.taxa = taxa;
     }
 
     // Método para realizar um depósito na conta poupança
-    public static void realizaDeposito(float valor) {
+    public void realizaDeposito(float valor) {
         float valorComTaxa = valor / (1 + taxa);
-        saldo += valorComTaxa;
+        double novoSaldo = getSaldo() + valorComTaxa;
+        setSaldo(novoSaldo);
         System.out.println("Depósito realizado com sucesso.");
         taxa += 0.005f;
         System.out.println("Taxa de juros atualizada: " + taxa);
     }
 
-	public void cadastrarConta(contaPoupanca conta) {
+	public double getTaxa() {
 		// TODO Auto-generated method stub
-		
+		return 0;
 	}
+
+    // Outros métodos e funcionalidades da classe
 }
