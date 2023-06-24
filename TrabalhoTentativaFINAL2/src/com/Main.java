@@ -136,36 +136,36 @@ public class Main {
                             
                             while (opcaoPoupanca != 0) {
                                 switch (opcaoPoupanca) {
-                                    case 1:
-                                    	
-                                        
-                                        
-                                        try {
-                                        	database.conectarBanco();
+                                    case 1:                     	
 
-                                            ResultSet resultadoConsulta = database.executarQuerySql("SELECT saldo FROM conta WHERE cpf = '" + cpf + "' AND senha = '" + senha + "'");
-                                            
-                                            if (resultadoConsulta.next()) {
-                                                double saldobanco = resultadoConsulta.getDouble("saldo");
-                                                System.out.println("Saldo: " + saldobanco);
-                                            } else {
-                                                System.out.println("CPF ou senha incorretos.");
-                                            }
-                                            
-                                            database.desconectarBanco();
-                                        } catch (Exception e) {
+                                    	try {
+                                                                        	
+                                    	    database.conectarBanco();
+                                    	    
+                                    	    ResultSet resultadoConsulta = database.executarQuerySql("SELECT saldo FROM conta_poupanca WHERE cpf = '" + cpf + "' AND senha = '" + senha + "'");
+
+                                    	    if (resultadoConsulta.next()) {
+                                    	        double saldoBanco = resultadoConsulta.getDouble("saldo");
+                                    	        System.out.println("Saldo na Conta R$: " + saldoBanco);
+                                    	    } else {
+                                    	        System.out.println("CPF ou senha incorretos.");
+                                    	    }
+
+                                    	    database.desconectarBanco();
+                                    	} catch (Exception e) {
                                             e.printStackTrace();
                                         }
                                         
                                         break;
                                         
                                     case 2:
-                                    	
-                                        // Realizar saque da Conta Poupança
-                                        System.out.println("Digite o valor do saque (Conta Poupança): ");
-                                        float valor = scanner.nextFloat();
+                                    	                              
                                                                       
                                         try {
+                                        	
+                                        	 // Realizar saque da Conta Poupança
+                                            System.out.println("Digite o valor do saque (Conta Poupança): ");
+                                            float valor = scanner.nextFloat();
                                             database.conectarBanco();
 
                                             ResultSet resultadoConsulta = database.executarQuerySql("SELECT * FROM conta_poupanca WHERE cpf = '" + cpf + "' AND senha = '" + senha + "'");
@@ -263,8 +263,8 @@ public class Main {
                             while (opcaoCorrente != 0) {
                                 switch (opcaoCorrente) {
                                     case 1:
-                                        // Consultar saldo da Conta Corrente
-                                        System.out.println("Saldo Conta Corrente: R$ " + contaCorrente.getSaldo());
+                                        
+                                      
                                         
                                         try {
                                         	database.conectarBanco();
@@ -273,7 +273,7 @@ public class Main {
                                             
                                             if (resultadoConsulta.next()) {
                                                 double saldobanco = resultadoConsulta.getDouble("saldo");
-                                                System.out.println("Saldo: " + saldobanco);
+                                                System.out.println("Saldo na Conta R$: " + saldobanco);
                                             } else {
                                                 System.out.println("CPF ou senha incorretos.");
                                             }
