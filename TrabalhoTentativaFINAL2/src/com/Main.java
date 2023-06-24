@@ -372,23 +372,41 @@ public class Main {
 
                     break;
                 case 3:
-                    System.out.println("Informe o nome do administrador: ");
-                    String nomeAdmin = scanner.nextLine();
+                	System.out.println("Informe o nome do administrador: ");
+                	String nomeAdmin = scanner.nextLine();
 
-                    System.out.println("Informe a senha do administrador: ");
-                    String senhaAdmin = scanner.nextLine();
+                	System.out.println("Informe a senha do administrador: ");
+                	String senhaAdmin = scanner.nextLine();
 
-                    System.out.println("Informe o CPF do administrador: ");
-                    String cpfAdmin = scanner.nextLine();
+                	System.out.println("Informe o CPF do administrador: ");
+                	String cpfAdmin = scanner.nextLine();
 
-                    // Verificar no banco de dados se as informações do administrador estão corretas
+                	try {
+                	    database.conectarBanco();
 
-                    // Se as informações estiverem corretas, acessar o menu do administrador
+                	  
+                	    ResultSet resultadoConsulta = database.executarQuerySql("SELECT * FROM administrador WHERE nome = '" + nomeAdmin +
+                	            "' AND senha = '" + senhaAdmin + "' AND cpf = '" + cpfAdmin + "'");
+
+                	    if (resultadoConsulta.next()) {
+                	       
+                	        System.out.println("Acesso autorizado. Bem-vindo, " + nomeAdmin + "!");
+                	        
+                	        exibirMenuAdministrador();
+                	    } else {
+                	        System.out.println("Informações do administrador incorretas. Acesso negado.");
+                	    }
+
+                	    database.desconectarBanco();
+                	} catch (Exception e) {
+                	    e.printStackTrace();
+                	}
                     while (true) {
                         System.out.println("=== MENU DO ADMINISTRADOR ===");
                         System.out.println("1. Visualizar todas as pessoas cadastradas");
                         System.out.println("2. Mudar senha da conta de um usuário");
-                        System.out.println("3. Sair");
+                        System.out.println("3. Deletar conta de um usuário");
+                        System.out.println("4. Sair");
 
                         opcao = scanner.nextInt();
                         scanner.nextLine(); // Limpar o buffer de entrada
@@ -403,8 +421,8 @@ public class Main {
 
                                     while (resultadoConsulta.next()) {
                                         System.out.println
-                                        ("ID - " + resultadoConsulta.getString("id") + " | NOME - " + 
-                                        resultadoConsulta.getString("nome") +
+                                        ("ID - " + resultadoConsulta.getString("") + " | NOME - " + 
+                                        resultadoConsulta.getString("titular") +
                                         resultadoConsulta.getString("cpf") + 
                                         resultadoConsulta.getString("conta") +
                                         resultadoConsulta.getString("senha") +
@@ -456,6 +474,11 @@ public class Main {
 
     scanner.close();
 }
+
+private static void exibirMenuAdministrador() {
+		// TODO Auto-generated method stub
+		
+	}
 
 private static void realizaDeposito(float valorDeposito, double taxa) {
 		// TODO Auto-generated method stub
