@@ -20,7 +20,7 @@ public class contaCorrente extends Conta {
     }
 
     // Método para definir o valor do cheque especial
-    public void setChequeEspecial(double chequeEspecial) {
+    public static void setChequeEspecial(double chequeEspecial) {
         contaCorrente.chequeEspecial = chequeEspecial;
     }
 
