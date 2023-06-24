@@ -165,33 +165,33 @@ public class Main {
                                         System.out.println("Digite o valor do saque (Conta Poupança): ");
                                         float valor = scanner.nextFloat();
                                                                       
-                                        	 try {
-                                                 database.conectarBanco();
+                                        try {
+                                            database.conectarBanco();
 
-                                                 ResultSet resultadoConsulta = database.executarQuerySql("SELECT * FROM conta WHERE cpf = '" + cpf + "' AND senha = '" + senha + "'");
+                                            ResultSet resultadoConsulta = database.executarQuerySql("SELECT * FROM conta_poupanca WHERE cpf = '" + cpf + "' AND senha = '" + senha + "'");
 
-                                                 if (resultadoConsulta.next()) {
-                                                     // CPF e senha válidos, realizar o saque
-                                                     double saldoBanco = resultadoConsulta.getDouble("saldo");
+                                            if (resultadoConsulta.next()) {
+                                                // CPF e senha válidos, realizar o saque
+                                                double saldoBanco = resultadoConsulta.getDouble("saldo");
 
-                                                     if (saldoBanco >= valor) {
-                                                         // Saldo suficiente para o saque
-                                                         double novoSaldo = saldoBanco - valor;
+                                                if (saldoBanco >= valor) {
+                                                    // Saldo suficiente para o saque
+                                                    double novoSaldo = saldoBanco - valor;
 
-                                                         // Atualizar o saldo na tabela conta
-                                                         boolean statusQuery = database.executarUpdateSql("UPDATE conta SET saldo = " + novoSaldo + " WHERE cpf = '" + cpf + "' AND senha = '" + senha + "'");
+                                                    // Atualizar o saldo na tabela conta_poupanca
+                                                    boolean statusQuery = database.executarUpdateSql("UPDATE conta_poupanca SET saldo = " + novoSaldo + " WHERE cpf = '" + cpf + "' AND senha = '" + senha + "'");
 
-                                                         System.out.println("Saque realizado com sucesso.");
-                                                         System.out.println("Novo saldo: " + novoSaldo);
-                                                     } else {
-                                                         System.out.println("Saldo insuficiente para o saque.");
-                                                     }
-                                                 } else {
-                                                     System.out.println("CPF ou senha incorretos.");
-                                                 }
+                                                    System.out.println("Saque realizado com sucesso.");
+                                                    System.out.println("Novo saldo: " + novoSaldo);
+                                                } else {
+                                                    System.out.println("Saldo insuficiente para o saque.");
+                                                }
+                                            } else {
+                                                System.out.println("CPF ou senha incorretos.");
+                                            }
 
-                                                 database.desconectarBanco();
-                                             } catch (Exception e) {
+                                            database.desconectarBanco();
+                                        }  catch (Exception e) {
                                                  e.printStackTrace();
                                              }
                                                                   
