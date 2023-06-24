@@ -18,12 +18,13 @@ public class contaService {
     }
 
     public void cadastrarConta(Conta conta) {
-        if (conta instanceof contaCorrente) {
-            contaCorrente.cadastrarConta((contaCorrente) conta);
-        } else if (conta instanceof contaPoupanca) {
-            contaPoupanca.cadastrarConta((contaPoupanca) conta);
+        if (conta instanceof com.model.contaCorrente) {
+            contaCorrente.cadastrarConta((ContaCorrente) conta);
+        } else if (conta instanceof com.model.contaPoupanca) {
+            contaPoupanca.cadastrarConta((com.model.contaPoupanca) conta);
         }
     }
+
 
     public void cadastrarPessoa(Pessoa pessoa) {
         pessoa.cadastrarPessoa(pessoa);

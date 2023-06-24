@@ -75,7 +75,7 @@ public class Main {
                 		    database.conectarBanco();
 
                 		  
-                		    boolean statusQuery = database.executarUpdateSql("INSERT INTO pessoa(nome, cpf, conta, senha, saldo) VALUES ('" + titular + "', '" + cpf + "', " + numero + ", " + senha + ", " + saldo + ")");
+                		    boolean statusQuery = database.executarUpdateSql("INSERT INTO `javatrab`.`conta`(numero, titular, cpf, senha, saldo) VALUES ('" + numero + "', '" + titular + "', " + cpf + ", " + senha + ", " + saldo + ")");
 
 
                 		    if (statusQuery) {
@@ -84,10 +84,10 @@ public class Main {
 
                 		    // Verificar o tipo de conta (1 - Conta Corrente, 2 - Conta Poupança)
                 		    if (tipoConta == 1) {
-                		        database.executarUpdateSql("INSERT INTO conta_corrente(titular, cpf, numero, senha) VALUES ('" + titular +  "',  " + numero + ", " + senha + ")");
+                		        database.executarUpdateSql("INSERT INTO conta_corrente(numero, titular, senha, saldo) VALUES ('" + numero +  "',  " + titular + ", " + senha + ", "  + saldo +  ")");
                 		        mensagemStatus("Conta corrente cadastrada com sucesso!");
                 		    } else if (tipoConta == 2) {
-                		        database.executarUpdateSql("INSERT INTO conta_poupanca(titular, cpf, numero, senha) VALUES ('" + titular + "',  " + numero + ", " + senha + ")");
+                		        database.executarUpdateSql("INSERT INTO conta_poupanca(numero, titular, senha, saldo) VALUES ('" + numero + "',  " + titular + ", " + senha + ", "  + saldo +  ")");
                 		        mensagemStatus("Conta poupança cadastrada com sucesso!");
                 		    } else {
                 		        mensagemStatus("Tipo de conta inválido!");
@@ -105,6 +105,18 @@ public class Main {
     
                     break;
                 case 2:
+                	
+
+                    System.out.println("Informe o CPF: ");
+                    scanner.nextLine();
+
+                    System.out.println("Digite a senha para o Cadastro da conta: ");
+                    senha = scanner.nextInt();
+                	
+                	
+                	
+                
+                	
                     System.out.println("1 - Conta Poupança");
                     System.out.println("2 - Conta Corrente");
                     System.out.println("3 - Voltar");
