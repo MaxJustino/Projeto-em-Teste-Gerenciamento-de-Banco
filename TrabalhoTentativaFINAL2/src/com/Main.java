@@ -56,9 +56,9 @@ public class Main {
                     System.out.println("Informe o tipo de conta (1 - Conta Corrente, 2 - Conta Poupança): ");
                     int tipoConta = scanner.nextInt();
                     scanner.nextLine(); // Limpar o buffer de entrada
-                    
+
                     Conta novaConta;
-                    
+
                     if (tipoConta == 1) {
                         novaConta = new contaCorrente(titular, cpf, numero, senha);
                     } else if (tipoConta == 2) {
@@ -67,50 +67,41 @@ public class Main {
                         mensagemStatus("Tipo de conta inválido!");
                         return;
                     }
-                		
-                		
 
-                		try {
-                			
-                		    database.conectarBanco();
+                    try {
+                        database.conectarBanco();
 
-                		  
-                		    boolean statusQuery = database.executarUpdateSql("INSERT INTO `javatrab`.`conta`(numero, titular, cpf, senha, saldo) VALUES ('" + numero + "', '" + titular + "', " + cpf + ", " + senha + ", " + saldo + ")");
+                        boolean statusQuery = database.executarUpdateSql("INSERT INTO `javatrab`.`conta`(numero, titular, cpf, senha, saldo, tipoConta) VALUES ('" + numero + "', '" + titular + "', '" + cpf + "', '" + senha + "', " + saldo + ", " + tipoConta + ")");
 
 
-                		    if (statusQuery) {
-                		        mensagemStatus("Nova pessoa cadastrada com sucesso!");
-                		    }
+                        if (statusQuery) {
+                            mensagemStatus("Nova pessoa cadastrada com sucesso!");
+                        
+                        } else {
+                            mensagemStatus("Tipo de conta inválido!");
+                        }
 
-                		    // Verificar o tipo de conta (1 - Conta Corrente, 2 - Conta Poupança)
-                		    if (tipoConta == 1) {
-                		        database.executarUpdateSql("INSERT INTO conta_corrente(numero, titular, senha, saldo) VALUES ('" + numero +  "',  " + titular + ", " + senha + ", "  + saldo +  ")");
-                		        mensagemStatus("Conta corrente cadastrada com sucesso!");
-                		    } else if (tipoConta == 2) {
-                		        database.executarUpdateSql("INSERT INTO conta_poupanca(numero, titular, senha, saldo) VALUES ('" + numero + "',  " + titular + ", " + senha + ", "  + saldo +  ")");
-                		        mensagemStatus("Conta poupança cadastrada com sucesso!");
-                		    } else {
-                		        mensagemStatus("Tipo de conta inválido!");
-                		    }
-
-                		    database.desconectarBanco();
-                		} catch (Exception e) {
-                		    mensagemStatus("Erro ao cadastrar a conta: " + e.getMessage());
-                		}
+                        database.desconectarBanco();
+                    } catch (Exception e) {
+                        mensagemStatus("Erro ao cadastrar a conta: " + e.getMessage());
+                    }
                 		
                 		
 
                 	
     
-    
+            
+        
                     break;
                 case 2:
                 	
 
+                	
+                	
                     System.out.println("Informe o CPF: ");
                     cpf = scanner.nextLine();
 
-                    System.out.println("Digite a senha para o Cadastro da conta: ");
+                    System.out.println("Digite a senha para acessar a conta: ");
                     senha = scanner.nextInt();
                     
                 	

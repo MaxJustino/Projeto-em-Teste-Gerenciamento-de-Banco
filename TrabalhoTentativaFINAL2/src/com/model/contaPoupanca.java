@@ -17,4 +17,9 @@ public class contaPoupanca extends Conta {
         taxa += 0.005f;
         System.out.println("Taxa de juros atualizada: " + taxa);
     }
+
+	public void cadastrarConta(contaPoupanca conta) {
+		// TODO Auto-generated method stub
+		
+	}
 }

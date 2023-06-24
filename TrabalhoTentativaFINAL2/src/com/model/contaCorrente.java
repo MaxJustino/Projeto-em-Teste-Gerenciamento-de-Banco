@@ -81,4 +81,11 @@ public void realizaSaque(float valor) {
             System.out.println("Saque realizado com sucesso.");
         }
     }
+
+
+
+public void cadastrarConta(contaCorrente conta) {
+	// TODO Auto-generated method stub
+	
+}
 }
