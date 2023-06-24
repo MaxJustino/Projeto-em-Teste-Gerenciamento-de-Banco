@@ -73,38 +73,39 @@ public class Main {
 
                         boolean statusQuery = database.executarUpdateSql("INSERT INTO `javatrab`.`conta`(numero, titular, cpf, senha, saldo, tipoConta) VALUES ('" + numero + "', '" + titular + "', '" + cpf + "', '" + senha + "', " + saldo + ", " + tipoConta + ")");
 
-
-                        if (statusQuery) {
-                            mensagemStatus("Nova pessoa cadastrada com sucesso!");
-                        
-                        } else {
-                            mensagemStatus("Tipo de conta inválido!");
-                        }
-
+                        System.out.println("Usuário Cadastrado com Sucesso");
+                    
                         database.desconectarBanco();
                     } catch (Exception e) {
                         mensagemStatus("Erro ao cadastrar a conta: " + e.getMessage());
                     }
                 		
-                		
-
-                	
-    
-            
-        
                     break;
                 case 2:
-                	
-
-                	
-                	
+               
+                	        	
                     System.out.println("Informe o CPF: ");
-                    cpf = scanner.nextLine();
+                     cpf = scanner.nextLine();
 
                     System.out.println("Digite a senha para acessar a conta: ");
                     senha = scanner.nextInt();
                     
-                	
+                   try {
+                	   database.conectarBanco();
+
+                       ResultSet resultadoConsulta = database.executarQuerySql("SELECT * FROM conta");
+
+                       {
+                           System.out.println
+                           ("numero - " + resultadoConsulta.getString("numero") + " | - " +  resultadoConsulta.getString("cpf") + resultadoConsulta.getString("senha"));
+                           
+                           database.desconectarBanco();
+                       }
+                    }
+                	catch (Exception e) {
+                		
+                		
+                	}
                 	
                 
                 	
@@ -237,10 +238,6 @@ public class Main {
                         switch (opcao) {
                         case 1:
 
-
-
-                                
-
                                 try {
                                     database.conectarBanco();
 
@@ -302,7 +299,7 @@ public class Main {
     scanner.close();
 }
 
-private static void mensagemStatus(String string) {
+public static  void mensagemStatus(String string) {
     // TODO Auto-generated method stub
 
 }
