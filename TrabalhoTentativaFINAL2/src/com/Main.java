@@ -3,6 +3,7 @@ package com;
 
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Scanner;
 import com.db.DBConect;
 import com.model.Conta;
@@ -413,30 +414,23 @@ public class Main {
 
                         switch (opcao) {
                         case 1:
+                        	try {
+                        	    database.conectarBanco();
 
-                                try {
-                                    database.conectarBanco();
+                        	    ResultSet resultadoConsulta = database.executarQuerySql("SELECT * FROM conta");
 
-                                    ResultSet resultadoConsulta = database.executarQuerySql("SELECT * FROM pessoa");
+                        	    while (resultadoConsulta.next()) {
+                        	        System.out.println("numero: " + resultadoConsulta.getString("numero") +
+                        	            " | Titular: " + resultadoConsulta.getString("titular") +
+                        	            " | CPF: " + resultadoConsulta.getString("cpf") +
+                        	            " | SALDO: " + resultadoConsulta.getString("saldo") +
+                        	            " | CONTA: " + resultadoConsulta.getString("tipoConta"));
+                        	    }
 
-                                    while (resultadoConsulta.next()) {
-                                        System.out.println
-                                        ("ID - " + resultadoConsulta.getString("") + " | NOME - " + 
-                                        resultadoConsulta.getString("titular") +
-                                        resultadoConsulta.getString("cpf") + 
-                                        resultadoConsulta.getString("conta") +
-                                        resultadoConsulta.getString("senha") +
-                                        resultadoConsulta.getString("saldo"));
-                                    }
-
-                                    database.desconectarBanco();
-
-                                }
-                                catch (Exception e) {
-
-
-                            }
-                                
+                        	    database.desconectarBanco();
+                        	} catch (SQLException e) {
+                        	    e.printStackTrace();
+                        	}
                         
                             break;
                         case 2:

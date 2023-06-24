@@ -9,7 +9,11 @@ public class Pessoa {
         this.cpf = cpf; // Inicializa o atributo cpf com o valor passado como par창metro
     }
 
-    public String getNome() {
+    public Pessoa(int numero, String titular, String cpf2, int senha, int saldo, int tipoConta) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public String getNome() {
         return nome; // Retorna o valor do atributo nome
     }
 
