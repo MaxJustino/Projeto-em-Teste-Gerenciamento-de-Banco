@@ -321,15 +321,35 @@ public class Main {
                                         break;
                                         
                                     case 3:
-                                    	
-                                        // Realizar saque com Cheque Especial da Conta Corrente
-                                        System.out.println("Digite o valor do saque com Cheque Especial (Conta Corrente): ");
-                                        valor = scanner.nextFloat();
-                                        contaCorrente.sacarComChequeEspecial(valor);
-                                        break;
-                                    default:
-                                        System.out.println("Opção inválida.");
-                                        break;
+                                    	 try {
+                                    	        // Realizar saque com Cheque Especial da Conta Corrente
+                                    	        System.out.println("Digite o valor do saque com Cheque Especial (Conta Corrente): ");
+                                    	        float valorbanco = scanner.nextFloat();
+
+                                    	        // Verificar se o valor do saque ultrapassa o saldo e o cheque especial
+                                    	        if (valorbanco <= (contaCorrente.getSaldo() + contaCorrente.getChequeEspecial())) {
+                                    	            contaCorrente.sacarComChequeEspecial(valorbanco);
+
+                                    	            // Atualizar o valor do cheque especial no banco de dados
+                                    	            database.conectarBanco();
+                                    	            boolean statusQuery = database.executarUpdateSql("UPDATE conta_corrente SET cheque_especial = " + contaCorrente.getChequeEspecial() +
+                                    	                    " WHERE numero = " + contaCorrente.getNumero());
+                                    	            if (statusQuery) {
+                                    	                System.out.println("Valor do cheque especial atualizado no banco de dados.");
+                                    	            } else {
+                                    	                System.out.println("Falha ao atualizar o valor do cheque especial no banco de dados.");
+                                    	            }
+                                    	            database.desconectarBanco();
+                                    	        } else {
+                                    	            System.out.println("Valor do saque excede o saldo e o cheque especial disponíveis.");
+                                    	        }
+                                    	    } catch (Exception e) {
+                                    	        e.printStackTrace();
+                                    	    }
+                                    	    break;
+                                    	default:
+                                    	    System.out.println("Opção inválida.");
+                                    	    break;
                                 }
 
                                 System.out.println("1 - Consultar saldo (Conta Corrente)");

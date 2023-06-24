@@ -24,5 +24,10 @@ public class contaPoupanca extends Conta {
 		return 0;
 	}
 
-    // Outros métodos e funcionalidades da classe
+	public void cadastrarConta(contaPoupanca conta) {
+		// TODO Auto-generated method stub
+		
+	}
+
+   
 }

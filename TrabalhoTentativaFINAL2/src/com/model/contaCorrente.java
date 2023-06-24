@@ -15,7 +15,7 @@ public class contaCorrente extends Conta {
     
 
     // Método para obter o valor do cheque especial
-    public double getChequeEspecial() {
+    public static double getChequeEspecial() {
         return chequeEspecial;
     }
 
