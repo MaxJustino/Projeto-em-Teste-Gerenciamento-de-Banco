@@ -90,24 +90,30 @@ public class Main {
                     System.out.println("Digite a senha para acessar a conta: ");
                     senha = scanner.nextInt();
                     
+                    
+                    
                    try {
                 	   database.conectarBanco();
 
-                       ResultSet resultadoConsulta = database.executarQuerySql("SELECT * FROM conta");
-
-                       {
-                           System.out.println
-                           ("numero - " + resultadoConsulta.getString("numero") + " | - " +  resultadoConsulta.getString("cpf") + resultadoConsulta.getString("senha"));
-                           
+                	   ResultSet resultadoConsulta = database.executarQuerySql("SELECT * FROM conta WHERE cpf = '" + cpf + "' AND senha = '" + senha + "'");
+                	   
+                	   if (resultadoConsulta.next()) {
+                           System.out.println("Número: " + resultadoConsulta.getInt("numero"));
+                           System.out.println("CPF: " + resultadoConsulta.getString("cpf"));
+                           System.out.println("Senha: " + resultadoConsulta.getString("senha"));
+                       } else {
+                           System.out.println("CPF ou senha incorretos.");
                            database.desconectarBanco();
+                           System.out.println("Verifique a conta e acesse novamente");
+                           break;
                        }
-                    }
-                	catch (Exception e) {
-                		
-                		
-                	}
+                       
+                       
+                   } catch (Exception e) {
+                       e.printStackTrace();
+                   }
                 	
-                
+            
                 	
                     System.out.println("1 - Conta Poupança");
                     System.out.println("2 - Conta Corrente");
