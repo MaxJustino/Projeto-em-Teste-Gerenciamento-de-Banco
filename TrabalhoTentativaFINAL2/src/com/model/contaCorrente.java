@@ -35,12 +35,11 @@ public class contaCorrente extends Conta {
         }
     }
     
-    // Método para realizar um saque utilizando o cheque especial
     public static void sacarComChequeEspecial(double valor) {
-        if (valor <= (getSaldo() + chequeEspecial + LIMITE_CHEQUE_ESPECIAL)) {
-            double valorSaque = valor;
+        double saldoTotal = getSaldo() + chequeEspecial;
+        if (valor <= saldoTotal || valor <= LIMITE_CHEQUE_ESPECIAL) {
             if (valor > getSaldo()) {
-                valorSaque -= getSaldo();
+                double valorSaque = valor - getSaldo();
                 setSaldo(0);
                 chequeEspecial -= valorSaque;
                 System.out.println("Saque de R$" + valor + " realizado na conta corrente " + getNumero() +
@@ -50,9 +49,10 @@ public class contaCorrente extends Conta {
                 System.out.println("Saque de R$" + valor + " realizado na conta corrente " + getNumero());
             }
         } else {
-            System.out.println("Saldo insuficiente na conta corrente " + getNumero());
+            System.out.println("Valor do saque excede o saldo e o cheque especial disponíveis.");
         }
     }
+
     
     // Método para depositar um valor na conta corrente
     public void depositar(double valor) {

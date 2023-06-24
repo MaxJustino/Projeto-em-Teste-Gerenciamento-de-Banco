@@ -320,32 +320,41 @@ public class Main {
                                         break;
                                         
                                     case 3:
-                                    	 try {
-                                    	       
-                                    	        System.out.println("Digite o valor do saque com Cheque Especial (Conta Corrente): ");
-                                    	        float valorbanco = scanner.nextFloat();
+                                    	try {
+                                    	    System.out.println("Digite o valor do saque com Cheque Especial (Conta Corrente): ");
+                                    	    float valorSaque = scanner.nextFloat();
 
-                                    	       
-                                    	        if (valorbanco <= (contaCorrente.getSaldo() + contaCorrente.getChequeEspecial())) {
-                                    	            contaCorrente.sacarComChequeEspecial(valorbanco);
+                                    	    // Obter o valor do cheque especial do banco de dados
+                                    	    database.conectarBanco();
+                                    	    ResultSet resultSet = database.executarQuerySql("SELECT cheque_especial FROM conta_corrente WHERE numero = " + contaCorrente.getNumero());
+                                    	    
+                                    	    if (resultSet.next()) {
+                                    	        float chequeEspecialAtual = resultSet.getFloat("cheque_especial");
 
-                                    	            
-                                    	            database.conectarBanco();
+                                    	        // Verificar se o valor do saque é válido
+                                    	        if (valorSaque <= (contaCorrente.getSaldo() + chequeEspecialAtual)) {
+                                    	            // Realizar o saque com cheque especial
+                                    	            contaCorrente.sacarComChequeEspecial(valorSaque);
+
+                                    	            // Atualizar o valor do cheque especial no banco de dados
                                     	            boolean statusQuery = database.executarUpdateSql("UPDATE conta_corrente SET cheque_especial = " + contaCorrente.getChequeEspecial() +
                                     	                    " WHERE numero = " + contaCorrente.getNumero());
+
                                     	            if (statusQuery) {
                                     	                System.out.println("Valor do cheque especial atualizado no banco de dados.");
-                                    	            } else {
+                                    	            } else  {
                                     	                System.out.println("Falha ao atualizar o valor do cheque especial no banco de dados.");
                                     	            }
-                                    	            database.desconectarBanco();
                                     	        } else {
                                     	            System.out.println("Valor do saque excede o saldo e o cheque especial disponíveis.");
                                     	        }
-                                    	    } catch (Exception e) {
-                                    	        e.printStackTrace();
-                                    	    }
-                                    	    break;
+                                    	    } 
+
+                                    	    database.desconectarBanco();
+                                    	} catch (Exception e) {
+                                    	    e.printStackTrace();
+                                    	}
+                                    	break;
                                     	default:
                                     	    System.out.println("Opção inválida.");
                                     	    break;
@@ -478,11 +487,14 @@ public class Main {
 
                         	    try {
                         	        database.conectarBanco();
-
-                        	     
+                        	        
+                        	        // Excluir conta corrente
                         	        boolean statusExclusaoCorrente = database.executarUpdateSql("DELETE FROM conta_corrente WHERE numero IN (SELECT numero FROM conta WHERE cpf = '" + cpfExcluir + "')");
 
-                        	    
+                        	        // Excluir conta poupança
+                        	        boolean statusExclusaoPoupanca = database.executarUpdateSql("DELETE FROM conta_poupanca WHERE numero IN (SELECT numero FROM conta WHERE cpf = '" + cpfExcluir + "')");
+
+                        	        // Excluir conta
                         	        boolean statusExclusaoConta = database.executarUpdateSql("DELETE FROM conta WHERE cpf = '" + cpfExcluir + "'");
 
                         	        if (statusExclusaoConta) {
@@ -495,10 +507,8 @@ public class Main {
                         	    } catch (Exception e) {
                         	        mensagemStatus("Erro ao excluir o usuário: " + e.getMessage());
                         	    }
-
-                        	    break;
                         default:
-                            System.out.println("Opção inválida.");
+                            System.out.println("Voltando ao Menu Inicial");
                             break;
                     }
                 
