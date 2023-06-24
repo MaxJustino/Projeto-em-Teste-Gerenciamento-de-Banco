@@ -23,7 +23,7 @@ public class Main {
         DBConect database = new DBConect();
         
         while (!sair) {
-            System.out.println("=== MENU ===");
+            System.out.println("=== BEM VINDO(A) ===");
             System.out.println("1. Cadastrar Conta");
             System.out.println("2. Acessar Conta");
             System.out.println("3. Acessar Administrador");
@@ -203,37 +203,35 @@ public class Main {
                                         float valorDeposito = scanner.nextFloat();
 
                                         try {
-                                            database.conectarBanco();
+                                        	 database.conectarBanco();
 
-                                            ResultSet resultadoConsulta = database.executarQuerySql("SELECT * FROM conta_poupanca WHERE cpf = '" + cpf + "' AND senha = '" + senha + "'");
+                                             ResultSet resultadoConsulta = database.executarQuerySql("SELECT * FROM conta_poupanca WHERE cpf = '" + cpf + "' AND senha = '" + senha + "'");
 
-                                            if (resultadoConsulta.next()) {
-                                                // CPF e senha válidos, realizar o depósito
-                                                double saldoPoupanca = resultadoConsulta.getDouble("saldo");
-                                                double taxa = resultadoConsulta.getFloat("taxa");  // Obtém a taxa de juros da conta poupança
+                                             if (resultadoConsulta.next()) {
+                                                 // CPF e senha válidos, realizar o depósito
+                                                 double saldoPoupanca = resultadoConsulta.getDouble("saldo");
+                                                 double taxa = resultadoConsulta.getFloat("taxa");  // Obtém a taxa de juros da conta poupança
 
-                                                // Cálculo do novo saldo considerando a taxa de juros atualizada
-                                                double novoSaldo = saldoPoupanca + (valorDeposito / (1 + taxa));
-                                                double novaTaxa = taxa + 0.005;  // Atualiza a taxa de juros
+                                                 // Cálculo do novo saldo considerando a taxa de juros atualizada
+                                                 double novoSaldo = saldoPoupanca + (valorDeposito / (1 + taxa));
+                                                 double novaTaxa = taxa + 0.005;  // Atualiza a taxa de juros
 
-                                                // Atualiza o saldo e a taxa de juros na tabela conta_poupanca
-                                                boolean statusQuery = database.executarUpdateSql("UPDATE conta_poupanca SET saldo = " + novoSaldo + ", taxa = " + novaTaxa + " WHERE cpf = '" + cpf + "' AND senha = '" + senha + "'");
+                                                 // Atualiza o saldo e a taxa de juros na tabela conta_poupanca
+                                                 boolean statusQuery = database.executarUpdateSql("UPDATE conta_poupanca SET saldo = " + novoSaldo + ", taxa = " + novaTaxa + " WHERE cpf = '" + cpf + "' AND senha = '" + senha + "'");
 
-                                                if (statusQuery) {
-                                                    System.out.println("Depósito realizado com sucesso.");
-                                                    System.out.println("Novo saldo: " + novoSaldo);
-                                                    System.out.println("Taxa de juros atualizada: " + novaTaxa);
-                                                } else {
-                                                    System.out.println("Falha ao atualizar saldo e taxa de juros.");
-                                                }
-                                            } else {
-                                                System.out.println("CPF ou senha incorretos.");
-                                            }
-
-                                            database.desconectarBanco();
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
+                                                 if (statusQuery) {
+                                                     System.out.println("Depósito realizado com sucesso.");
+                                                     System.out.println("Novo saldo: " + novoSaldo);
+                                                     System.out.println("Taxa de juros atualizada: " + novaTaxa);
+                                                 } else {
+                                                     System.out.println("Falha ao atualizar saldo e taxa de juros.");
+                                                 }
+                                             } 
+                                                
+                                             database.desconectarBanco();
+                                         } catch (Exception e) {
+                                             e.printStackTrace();
+                                         }
                                         break;
                                 }
 
@@ -323,15 +321,15 @@ public class Main {
                                         
                                     case 3:
                                     	 try {
-                                    	        // Realizar saque com Cheque Especial da Conta Corrente
+                                    	       
                                     	        System.out.println("Digite o valor do saque com Cheque Especial (Conta Corrente): ");
                                     	        float valorbanco = scanner.nextFloat();
 
-                                    	        // Verificar se o valor do saque ultrapassa o saldo e o cheque especial
+                                    	       
                                     	        if (valorbanco <= (contaCorrente.getSaldo() + contaCorrente.getChequeEspecial())) {
                                     	            contaCorrente.sacarComChequeEspecial(valorbanco);
 
-                                    	            // Atualizar o valor do cheque especial no banco de dados
+                                    	            
                                     	            database.conectarBanco();
                                     	            boolean statusQuery = database.executarUpdateSql("UPDATE conta_corrente SET cheque_especial = " + contaCorrente.getChequeEspecial() +
                                     	                    " WHERE numero = " + contaCorrente.getNumero());
@@ -420,7 +418,7 @@ public class Main {
                         	    ResultSet resultadoConsulta = database.executarQuerySql("SELECT * FROM conta");
 
                         	    while (resultadoConsulta.next()) {
-                        	        System.out.println("numero: " + resultadoConsulta.getString("numero") +
+                        	        System.out.println("Numero: " + resultadoConsulta.getString("numero") +
                         	            " | Titular: " + resultadoConsulta.getString("titular") +
                         	            " | CPF: " + resultadoConsulta.getString("cpf") +
                         	            " | SALDO: " + resultadoConsulta.getString("saldo") +
@@ -434,41 +432,97 @@ public class Main {
                         
                             break;
                         case 2:
-                            System.out.println("Informe o CPF do usuário: ");
-                            String cpfUsuario = scanner.nextLine();
+                        	System.out.println("Informe o CPF do usuário: ");
+                        	String cpfUsuario = scanner.nextLine();
 
-                            // Verificar se o CPF existe no banco de dados
+                        	try {
+                        	    database.conectarBanco();
 
-                            // Se existir, permitir a alteração da senha da conta do usuário
+                        	    ResultSet resultadoConsulta = database.executarQuerySql("SELECT * FROM conta WHERE cpf = '" + cpfUsuario + "'");
 
+                        	    if (resultadoConsulta.next()) {
+                        	        System.out.println("CPF encontrado!");
+
+                        	        // Extrair os dados da consulta
+                        	        String numeroConta = resultadoConsulta.getString("numero");
+                        	        String titularBANCO = resultadoConsulta.getString("titular");
+                        	        String cpfBANCO = resultadoConsulta.getString("cpf");
+                        	        String senhaAtual = resultadoConsulta.getString("senha");
+
+                        	       
+                        	        System.out.println("Número da conta: " + numeroConta +
+                        	                "\nTitular: " + titularBANCO +
+                        	                "\nCPF: " + cpfBANCO +
+                        	                "\nSenha atual: " + senhaAtual);
+
+                        	        
+                        	        System.out.println("Informe a nova senha: ");
+                        	        String novaSenha = scanner.nextLine();
+
+                        	   
+                        	        String updateQuery = "UPDATE conta SET senha = '" + novaSenha + "' WHERE cpf = '" + cpfBANCO + "'";
+                        	        database.executarUpdateSql(updateQuery);
+                        	        System.out.println("Senha atualizada com sucesso!");
+                        	    } else {
+                        	        System.out.println("CPF não encontrado!");
+                        	    }
+
+                        	    database.desconectarBanco();
+                        	} catch (SQLException e) {
+                        	    e.printStackTrace();
+                        	}
                             break;
                         case 3:
-                            System.out.println("Saindo do menu do administrador...");
-                            break;
+                        	 System.out.println("Digite o CPF do usuário a ser excluído: ");
+                        	    String cpfExcluir = scanner.nextLine();
+
+                        	    try {
+                        	        database.conectarBanco();
+
+                        	     
+                        	        boolean statusExclusaoCorrente = database.executarUpdateSql("DELETE FROM conta_corrente WHERE numero IN (SELECT numero FROM conta WHERE cpf = '" + cpfExcluir + "')");
+
+                        	    
+                        	        boolean statusExclusaoConta = database.executarUpdateSql("DELETE FROM conta WHERE cpf = '" + cpfExcluir + "'");
+
+                        	        if (statusExclusaoConta) {
+                        	            System.out.println("Usuário excluído com sucesso.");
+                        	        } else {
+                        	            System.out.println("Não foi possível excluir o usuário.");
+                        	        }
+
+                        	        database.desconectarBanco();
+                        	    } catch (Exception e) {
+                        	        mensagemStatus("Erro ao excluir o usuário: " + e.getMessage());
+                        	    }
+
+                        	    break;
                         default:
                             System.out.println("Opção inválida.");
                             break;
                     }
-
-                    if (opcao == 3) {
-                        break;
-                    }
+                
                 }
 
-                break;
-            case 4:
-                sair = true;
-                System.out.println("Saindo do sistema...");
-                break;
-            default:
-                System.out.println("Opção inválida.");
-                break;
-        }
-    }
+                case 4:
+                   
+                	 sair = true;
+                     System.out.println("Encerrando o programa...");
+                     break;
 
-    scanner.close();
+                 default:
+                     System.out.println("Volte Sempre!");
+                     break;
+             }
+         }
+    
+    
 }
 
+
+
+
+ ///Correções    
 private static void exibirMenuAdministrador() {
 		// TODO Auto-generated method stub
 		
