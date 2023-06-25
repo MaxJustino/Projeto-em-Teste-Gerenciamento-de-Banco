@@ -326,7 +326,9 @@ public class Main {
                                     case 3:
                                     	
                                     	try {
-                                    	    System.out.println("Digite o valor do saque com Cheque Especial (Conta Corrente): ");
+                                    		System.out.println("Opção Indisponível");
+                                    		
+                                    	   /* System.out.println("Digite o valor do saque com Cheque Especial (Conta Corrente): ");
                                     	    float valorSaque = scanner.nextFloat();
                                     	    database.conectarBanco();
 
@@ -369,9 +371,12 @@ public class Main {
                                     	    }
                                     	    
                                     	    database.desconectarBanco();
-                                    	}catch (SQLException e) {
-                                    	    System.out.println("Erro ao executar a consulta SQL: " + e.getMessage());
+                                    	    */
+                                    	}catch (Exception e)
+                                    	 {
+                                    	    
                                     	}
+                                    	
                                     	break;
                                     	default:
                                     	    System.out.println("Opção inválida.");
@@ -430,21 +435,18 @@ public class Main {
 
                                 switch (opcao) {
                                     case 1:
-                                        try {
-                                            database.conectarBanco();
-
-                                            ResultSet resultadoConsultaBanco = database.executarQuerySql("SELECT * FROM conta");
-
-                                            while (resultadoConsulta.next()) {
-                                                System.out.println("Numero: " + resultadoConsulta.getString("numero") +
-                                                        " | Titular: " + resultadoConsulta.getString("titular") +
-                                                        " | CPF: " + resultadoConsulta.getString("cpf") +
-                                                        " | SALDO: " + resultadoConsulta.getString("saldo") +
-                                                        " | CONTA: " + resultadoConsulta.getString("tipoConta"));
-                                            }
-
-                                            database.desconectarBanco();
-                                        } catch (SQLException e) {
+                                    	try {
+                                    	    database.conectarBanco();
+                                    	    ResultSet resultadoConsulta1 = database.executarQuerySql("SELECT * FROM conta");
+                                    	    while (resultadoConsulta1.next()) {
+                                    	        System.out.println("Numero: " + resultadoConsulta1.getString("numero") +
+                                    	            " | Titular: " + resultadoConsulta1.getString("titular") +
+                                    	            " | CPF: " + resultadoConsulta1.getString("cpf") +
+                                    	            " | SALDO: " + resultadoConsulta1.getString("saldo") +
+                                    	            " | CONTA: " + resultadoConsulta1.getString("tipoConta"));
+                                    	    }
+                                    	    database.desconectarBanco();
+                                    	} catch (SQLException e) {
                                             e.printStackTrace();
                                         }
 
