@@ -452,42 +452,40 @@ public class Main {
 
                                         break;
                                     case 2:
-                                        System.out.println("Informe o CPF do usuário: ");
-                                        String cpfUsuario = scanner.nextLine();
-
-                                        try {
-                                            database.conectarBanco();
-
-                                            ResultSet resultadoConsultaBanco = database.executarQuerySql("SELECT * FROM conta WHERE cpf = '" + cpfUsuario + "'");
-
-                                            if (resultadoConsulta.next()) {
-                                                System.out.println("CPF encontrado!");
-
-                                                // Extrair os dados da consulta
-                                                String numeroConta = resultadoConsulta.getString("numero");
-                                                String titularBANCO = resultadoConsulta.getString("titular");
-                                                String cpfBANCO = resultadoConsulta.getString("cpf");
-                                                String senhaAtual = resultadoConsulta.getString("senha");
-
-                                                System.out.println("Número da conta: " + numeroConta +
-                                                        "\nTitular: " + titularBANCO +
-                                                        "\nCPF: " + cpfBANCO +
-                                                        "\nSenha atual: " + senhaAtual);
-
-                                                System.out.println("Informe a nova senha: ");
-                                                String novaSenha = scanner.nextLine();
-
-                                                String updateQuery = "UPDATE conta SET senha = '" + novaSenha + "' WHERE cpf = '" + cpfBANCO + "'";
-                                                database.executarUpdateSql(updateQuery);
-                                                System.out.println("Senha atualizada com sucesso!");
-                                            } else {
-                                                System.out.println("CPF não encontrado!");
-                                            }
-
-                                            database.desconectarBanco();
-                                        } catch (SQLException e) {
-                                            e.printStackTrace();
-                                        }
+                                    
+                                    
+                                    	try {
+                                    	    System.out.println("Informe o CPF do usuário: ");
+                                    	    String cpfUsuario = scanner.nextLine();
+                                    	    
+                                    	    database.conectarBanco();
+                                    	    ResultSet resultadoConsultasql = database.executarQuerySql("SELECT * FROM conta WHERE cpf = '" + cpfUsuario + "'");
+                                    	    if (resultadoConsultasql.next()) {
+                                    	        System.out.println("CPF encontrado!");
+                                    	        // Extrair os dados da consulta
+                                    	        String numeroConta = resultadoConsultasql.getString("numero");
+                                    	        String titularBANCO = resultadoConsultasql.getString("titular");
+                                    	        String cpfBANCO = resultadoConsultasql.getString("cpf");
+                                    	        String senhaAtual = resultadoConsultasql.getString("senha");
+                                    	       
+                                    	        System.out.println("Número da conta: " + numeroConta +
+                                    	                "\nTitular: " + titularBANCO +
+                                    	                "\nCPF: " + cpfBANCO +
+                                    	                "\nSenha atual: " + senhaAtual);
+                                    	        
+                                    	        System.out.println("Informe a nova senha: ");
+                                    	        String novaSenha = scanner.nextLine();
+                                    	   
+                                    	        String updateQuery = "UPDATE conta SET senha = '" + novaSenha + "' WHERE cpf = '" + cpfBANCO + "'";
+                                    	        database.executarUpdateSql(updateQuery);
+                                    	        System.out.println("Senha atualizada com sucesso!");
+                                    	    } else {
+                                    	        System.out.println("CPF não encontrado!");
+                                    	    }
+                                    	    database.desconectarBanco();
+                                    	} catch (Exception e) {
+                                    	    System.out.println("Ocorreu um erro: " + e.getMessage());
+                                    	} 
                                         break;
                                     case 3:
                                         System.out.println("Digite o CPF do usuário a ser excluído: ");
@@ -537,9 +535,10 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println("Volte Sempre!");
+                    System.out.println("Selecione uma Opção");
                     break;
                 }
+            
         }
     }
 
